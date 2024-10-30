@@ -1,4 +1,4 @@
-/* Reset e Estilos Gerais */
+/* Estilos Gerais */
 * {
     margin: 0;
     padding: 0;
@@ -16,13 +16,12 @@ body {
 
 .container {
     width: 90%;
-    max-width: 600px;
+    max-width: 1200px;
     margin: 20px auto;
     padding: 20px;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    text-align: center;
 }
 
 /* Barra de Navegação */
@@ -46,17 +45,38 @@ body {
     background-color: #575757;
 }
 
-/* Títulos e Cabeçalhos */
-h1, h2 {
+/* Estilo de Títulos e Cabeçalhos */
+h2 {
     color: #333;
     margin-bottom: 20px;
-    font-size: 1.8em;
+    font-size: 1.5em;
 }
 
-/* Formulários de Login e Cadastro */
+/* Tabelas */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table th, table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #333;
+    color: white;
+}
+
+table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Formulários */
 form {
     margin-top: 20px;
-    text-align: left;
 }
 
 form label {
@@ -66,23 +86,22 @@ form label {
 }
 
 form input[type="text"],
-form input[type="password"],
 form input[type="number"],
+form input[type="password"],
 form select,
 form textarea {
     width: 100%;
-    padding: 10px;
-    margin: 5px 0 15px;
+    padding: 8px;
+    margin: 8px 0 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 16px;
 }
 
 form button {
-    width: 100%;
     background-color: #333;
     color: white;
-    padding: 10px;
+    padding: 10px 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -91,21 +110,6 @@ form button {
 
 form button:hover {
     background-color: #575757;
-}
-
-/* Mensagens de Erro e Sucesso */
-p {
-    margin: 10px 0;
-}
-
-p[style*="color: red;"] {
-    color: #e91e63;
-    font-weight: bold;
-}
-
-p[style*="color: green;"] {
-    color: #4CAF50;
-    font-weight: bold;
 }
 
 /* Botões de Ação */
@@ -135,40 +139,14 @@ p[style*="color: green;"] {
     background-color: #f06292;
 }
 
-.btn-add {
-    background-color: #4CAF50;
-    color: white;
-}
-
-.btn-add:hover {
-    background-color: #45a049;
-}
-
-
-/* Tabelas */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-}
-
-table th, table td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-table th {
-    background-color: #333;
-    color: white;
-}
-
-table tr:hover {
-    background-color: #f1f1f1;
-}
-
 /* Responsividade */
 @media (max-width: 768px) {
     .container {
         width: 100%;
-     
+        margin: 10px;
+    }
+
+    table, form input, form button {
+        font-size: 14px;
+    }
+}

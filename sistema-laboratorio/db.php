@@ -1,9 +1,9 @@
 <?php
 // db.php
-$host = 'localhost';
-$user = 'root';
-$password = '';
-$dbname = 'sistema_laboratorio';
+$host = 'sistema_labor.mysql.dbaas.com.br';
+$user = 'sistema_labor';
+$password = 'i26E2gH@';
+$dbname = 'sistema_labor';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $password);

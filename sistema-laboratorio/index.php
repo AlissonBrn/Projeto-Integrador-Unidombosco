@@ -1,5 +1,18 @@
 <?php
 session_start();
+include 'db.php'; // Conexão com o banco de dados
+
+// Verificar se há um administrador cadastrado no banco de dados
+$sql = "SELECT COUNT(*) FROM funcionarios WHERE nivel_acesso = 'admin'";
+$stmt = $pdo->prepare($sql);
+$stmt->execute();
+$adminCount = $stmt->fetchColumn();
+
+// Se não houver administradores cadastrados, redirecionar para a página de cadastro de administrador
+if ($adminCount == 0) {
+    header("Location: primeiro_acesso.php");
+    exit;
+}
 
 // Verificar se o colaborador está logado
 if (!isset($_SESSION['id'])) {
@@ -7,11 +20,9 @@ if (!isset($_SESSION['id'])) {
     exit;
 }
 
-// Incluir o arquivo de conexão com o banco de dados
-include 'db.php';
-
 // Saudação ao colaborador logado
 $nomeUsuario = htmlspecialchars($_SESSION['nome']);
+$nivelAcesso = $_SESSION['nivel_acesso'];
 ?>
 
 <!DOCTYPE html>
@@ -33,6 +44,12 @@ $nomeUsuario = htmlspecialchars($_SESSION['nome']);
             <a href="produtos/listar.php">Produtos</a>
             <a href="pedidos/listar.php">Pedidos</a>
             <a href="relatorios/gerarRelatorio.php">Relatórios</a>
+            
+            <!-- Link para o painel de administração, visível apenas para administradores -->
+            <?php if ($nivelAcesso === 'admin'): ?>
+                <a href="admin.php">Administração</a>
+            <?php endif; ?>
+
             <a href="logout.php" style="float: right;">Sair</a>
         </nav>
 
