@@ -15,12 +15,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Verificar se o usuário foi encontrado e se a senha está correta
     if ($funcionario && password_verify($senha, $funcionario['senha'])) {
-        // Armazenar o ID e o nome do colaborador na sessão
+        // Armazenar o ID, nome e nível de acesso do colaborador na sessão
         $_SESSION['id'] = $funcionario['id'];
         $_SESSION['nome'] = $funcionario['nome'];
+        $_SESSION['nivel_acesso'] = $funcionario['nivel_acesso'];
         
-        // Redirecionar para a página inicial
-        header("Location: index.php");
+        // Redirecionar para a página inicial ou administrativa, dependendo do nível de acesso
+        if ($_SESSION['nivel_acesso'] === 'admin') {
+            header("Location: admin.php");
+        } else {
+            header("Location: index.php");
+        }
         exit;
     } else {
         // Mensagem de erro caso as credenciais estejam incorretas

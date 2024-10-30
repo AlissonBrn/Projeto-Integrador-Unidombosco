@@ -1,0 +1,1 @@
+INSERT INTO funcionarios (nome, usuario, senha, nivel_acesso) VALUES ('Admin', 'admin', 'hash_da_senha_aqui', 'senha');
