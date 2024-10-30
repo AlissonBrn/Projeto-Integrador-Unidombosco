@@ -14,4 +14,6 @@ Gerenciamento de Pedidos
 
 Relatórios de Vendas
 
-Sistema de loguin para os colaboradores
+Sistema de login para os colaboradores
+
+Pagina para do administrador
