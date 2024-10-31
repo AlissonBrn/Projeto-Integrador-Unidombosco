@@ -1,6 +1,7 @@
 <?php
 session_start();
 include '../db.php'; // Conexão com o banco de dados
+include '../funcoes.php'; // Inclui a função para exibir botões de navegação
 
 // Verificar se o colaborador está logado
 if (!isset($_SESSION['id'])) {
@@ -37,6 +38,7 @@ $clientes = $stmt->fetchAll();
         </div>
     </nav>
 
+    <!-- Conteúdo Principal -->
     <div class="container mt-5">
         <h2 class="mb-4">Gerenciar Clientes</h2>
         
@@ -50,7 +52,9 @@ $clientes = $stmt->fetchAll();
                     <th>ID</th>
                     <th>Nome</th>
                     <th>Endereço</th>
-                    <th>Contato</th>
+                    <th>CPF/CNPJ</th>
+                    <th>E-mail</th>
+                    <th>Telefone</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -60,7 +64,9 @@ $clientes = $stmt->fetchAll();
                     <td><?= $cliente['id'] ?></td>
                     <td><?= htmlspecialchars($cliente['nome']) ?></td>
                     <td><?= htmlspecialchars($cliente['endereco']) ?></td>
-                    <td><?= htmlspecialchars($cliente['contato']) ?></td>
+                    <td><?= htmlspecialchars($cliente['cpf_cnpj']) ?></td>
+                    <td><?= htmlspecialchars($cliente['email']) ?></td>
+                    <td><?= htmlspecialchars($cliente['telefone']) ?></td>
                     <td>
                         <a href="editar.php?id=<?= $cliente['id'] ?>" class="btn btn-warning btn-sm">Editar</a>
                         <a href="deletar.php?id=<?= $cliente['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este cliente?');">Deletar</a>
@@ -69,8 +75,11 @@ $clientes = $stmt->fetchAll();
                 <?php endforeach; ?>
             </tbody>
         </table>
+
+        <!-- Exibir Botões de Navegação -->
+        <?php exibirBotoesNavegacao(); ?>
     </div>
-    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

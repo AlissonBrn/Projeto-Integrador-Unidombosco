@@ -1,6 +1,7 @@
 <?php
 session_start();
 include '../db.php'; // Conexão com o banco de dados
+include '../funcoes.php'; // Inclui a função para exibir botões de navegação
 
 // Verificar se o usuário está logado
 if (!isset($_SESSION['id'])) {
@@ -125,6 +126,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <button type="submit" class="btn btn-primary">Gerar Orçamento</button>
         </form>
+        
+        <!-- Exibir Botões de Navegação -->
+        <?php exibirBotoesNavegacao(); ?>
+        
+        
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

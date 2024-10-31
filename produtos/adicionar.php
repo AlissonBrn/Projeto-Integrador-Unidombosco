@@ -1,6 +1,8 @@
 <?php
 session_start();
 include '../db.php'; // Conexão com o banco de dados
+include '../funcoes.php'; // Inclui as funções de navegação
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nome = $_POST['nome'];
@@ -66,6 +68,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <button type="submit" class="btn btn-primary">Adicionar Produto</button>
         </form>
+    </div>
+    
+      <!-- Exibir Botões de Navegação -->
+        <?php exibirBotoesNavegacao(); ?>
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

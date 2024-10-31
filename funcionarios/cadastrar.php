@@ -1,6 +1,7 @@
 <?php
 session_start();
 include '../db.php'; // Conexão com o banco de dados
+include '../funcoes.php'; // Inclui a função para exibir botões de navegação
 
 // Verificar se o usuário está logado e se tem permissão de administrador (opcional)
 if (!isset($_SESSION['id'])) {
@@ -84,6 +85,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <button type="submit">Cadastrar Funcionário</button>
         </form>
+        
+        <!-- Exibir Botões de Navegação -->
+        <?php exibirBotoesNavegacao(); ?>
+        
+        
     </div>
 </body>
 </html>

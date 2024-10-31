@@ -1,6 +1,7 @@
 <?php
 session_start();
 include 'db.php'; // Conexão com o banco de dados
+include '../funcoes.php'; // Inclui a função para exibir botões de navegação
 
 // Verificar se o usuário é administrador
 if (!isset($_SESSION['id']) || $_SESSION['nivel_acesso'] !== 'admin') {
@@ -65,6 +66,10 @@ $funcionarios = $stmt->fetchAll();
                 <?php endforeach; ?>
             </tbody>
         </table>
+        
+        <!-- Exibir Botões de Navegação -->
+        <?php exibirBotoesNavegacao(); ?>
+        
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
