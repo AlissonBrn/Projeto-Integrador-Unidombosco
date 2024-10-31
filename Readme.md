@@ -1,18 +1,18 @@
 Projeto Integrador ADS Unidombosco
 - Sistema de gerenciamento para uma empresa de vendas de produtos para laboratorio.
-- Criado utilizando PHP e CSS.
-- Banco de dados em utilizado no projeto MySql.
+- Criado utilizando PHP, CSS e Bootstrap.
+- Banco de dados em .sql
 - Funcionalidades adicionadas ao projeto:
 
-Cadastro de clientes
+Cadastro e gerenciamento de clientes
 
-Cadastro de Produtos e Estoque
+Cadastro e gerenciamento produtos e estoque
 
-Geração de Orçamentos
+Geração de orçamentos -- 50%
 
-Gerenciamento de Pedidos
+Gerenciamento de pedidos -- 30%
 
-Relatórios de Vendas
+Relatórios de Vendas -- 50%
 
 Sistema de login para os colaboradores
 
