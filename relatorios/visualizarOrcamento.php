@@ -1,6 +1,7 @@
 <?php
 session_start();
-include '../db.php';
+include '../db.php'; // Conexão com o banco de dados
+include '../funcoes.php'; // Inclui a função para exibir botões de navegação
 
 // Verificar se o usuário está logado
 if (!isset($_SESSION['id'])) {
@@ -11,7 +12,7 @@ if (!isset($_SESSION['id'])) {
 // Obter o ID do orçamento
 $id_orcamento = $_GET['id'] ?? null;
 
-// Consultar detalhes do orçamento e informações do cliente
+// Buscar detalhes do orçamento e informações do cliente
 $sql_orcamento = "
     SELECT o.*, c.nome AS cliente_nome, c.endereco AS cliente_endereco
     FROM orcamentos o
@@ -26,7 +27,7 @@ if (!$orcamento) {
     exit;
 }
 
-// Consultar os produtos do orçamento
+// Buscar produtos do orçamento
 $sql_produtos = "
     SELECT p.nome, p.marca, io.quantidade, io.valor_unitario
     FROM itens_orcamento io
@@ -42,7 +43,7 @@ $produtos = $stmt->fetchAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualizar Orçamento - Sistema de Vendas</title>
+    <title>Detalhes do Orçamento - Sistema de Vendas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
@@ -80,6 +81,11 @@ $produtos = $stmt->fetchAll();
             </tbody>
         </table>
         <a href="gerarRelatorio.php" class="btn btn-secondary mt-3">Voltar</a>
+        
+        <!-- Exibir Botões de Navegação -->
+        <?php exibirBotoesNavegacao(); ?>
+        
+        
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
