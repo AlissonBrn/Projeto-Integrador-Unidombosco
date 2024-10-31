@@ -1,19 +1,26 @@
 <?php
-// Incluir o arquivo de conexão com o banco de dados
-include '../db.php';
+session_start();
+include '../db.php'; // Conexão com o banco de dados
 
-// Verificar se o ID do produto foi passado via GET
-if (isset($_GET['id'])) {
-    $id = $_GET['id'];
-
-    // Excluir produto do banco de dados
-    $sql = "DELETE FROM produtos WHERE id = :id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(['id' => $id]);
-
-    // Redirecionar para a lista de produtos
-    header("Location: listar.php");
-} else {
-    echo "ID de produto não fornecido.";
+// Verificar se o colaborador está logado
+if (!isset($_SESSION['id'])) {
+    header("Location: ../login.php");
+    exit;
 }
-?>
+
+// Obter o ID do produto a partir do parâmetro URL
+$id = $_GET['id'] ?? null;
+
+// Verificar se o ID do produto foi fornecido
+if (!$id) {
+    echo "Produto não encontrado.";
+    exit;
+}
+
+// Deletar o produto do banco de dados
+$sql = "DELETE FROM produtos WHERE id = :id";
+$stmt = $pdo->prepare($sql);
+$stmt->execute(['id' => $id]);
+
+header("Location: listar.php");
+exit;
