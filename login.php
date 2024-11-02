@@ -38,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body class="bg-light">
     <div class="container d-flex align-items-center justify-content-center" style="height: 100vh;">
         <div class="card shadow-sm p-4" style="width: 100%; max-width: 400px;">
-            <h2 class="text-center mb-4">Login</h2>
+            <h2 class="text-center mb-4">Login Sistema de Vendas</h2>
             <?php if (isset($erro)): ?>
                 <div class="alert alert-danger"><?= $erro ?></div>
             <?php endif; ?>

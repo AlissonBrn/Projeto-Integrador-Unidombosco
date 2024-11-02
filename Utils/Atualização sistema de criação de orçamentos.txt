@@ -1,0 +1,22 @@
+-- Tabela Orçamentos
+CREATE TABLE IF NOT EXISTS orcamentos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    numero_orcamento VARCHAR(20) NOT NULL,
+    data DATE DEFAULT CURRENT_DATE,
+    validade INT NOT NULL,
+    prazo_entrega VARCHAR(100),
+    id_cliente INT,
+    valor_total DECIMAL(10, 2),
+    FOREIGN KEY (id_cliente) REFERENCES clientes(id) ON DELETE SET NULL
+);
+
+-- Tabela Itens do Orçamento
+CREATE TABLE IF NOT EXISTS itens_orcamento (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_orcamento INT,
+    id_produto INT,
+    quantidade INT NOT NULL,
+    valor_unitario DECIMAL(10, 2),
+    FOREIGN KEY (id_orcamento) REFERENCES orcamentos(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_produto) REFERENCES produtos(id) ON DELETE SET NULL
+);

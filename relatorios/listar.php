@@ -1,7 +1,6 @@
 <?php
 session_start();
 include '../db.php'; // Conexão com o banco de dados
-include '../funcoes.php'; // Inclui a função para exibir botões de navegação
 
 // Verificar se o colaborador está logado
 if (!isset($_SESSION['id'])) {
@@ -9,10 +8,10 @@ if (!isset($_SESSION['id'])) {
     exit;
 }
 
-// Consultar todos os produtos
-$sql = "SELECT * FROM produtos";
+// Consultar todos os clientes
+$sql = "SELECT * FROM clientes";
 $stmt = $pdo->query($sql);
-$produtos = $stmt->fetchAll();
+$clientes = $stmt->fetchAll();
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +19,7 @@ $produtos = $stmt->fetchAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Produtos - Sistema de Vendas</title>
+    <title>Clientes - Sistema de Vendas</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
@@ -39,48 +38,37 @@ $produtos = $stmt->fetchAll();
     </nav>
 
     <div class="container mt-5">
-        <h2 class="mb-4">Gerenciar Produtos</h2>
+        <h2 class="mb-4">Gerenciar Clientes</h2>
         
-        <!-- Botão para adicionar novo produto -->
-        <a href="adicionar.php" class="btn btn-success mb-3">Adicionar Novo Produto</a>
+        <!-- Botão para adicionar novo cliente -->
+        <a href="adicionar.php" class="btn btn-success mb-3">Adicionar Novo Cliente</a>
 
-        <!-- Tabela de Produtos -->
+        <!-- Tabela de Clientes -->
         <table class="table table-bordered table-striped">
             <thead class="table-dark">
                 <tr>
                     <th>ID</th>
                     <th>Nome</th>
-                    <th>Descrição</th>
-                    <th>Tipo da Unidade</th>
-                    <th>Marca</th>
-                    <th>Preço</th>
-                    <th>Quantidade</th>
+                    <th>Endereço</th>
+                    <th>Contato</th>
                     <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($produtos as $produto): ?>
+                <?php foreach ($clientes as $cliente): ?>
                 <tr>
-                    <td><?= $produto['id'] ?></td>
-                    <td><?= htmlspecialchars($produto['nome']) ?></td>
-                    <td><?= htmlspecialchars($produto['descricao']) ?></td>
-                    <td><?= htmlspecialchars($produto['tipo_unidade']) ?></td>
-                    <td><?= htmlspecialchars($produto['marca']) ?></td>
-                    <td>R$ <?= number_format($produto['preco'], 2, ',', '.') ?></td>
-                    <td><?= $produto['quantidade'] ?></td>
+                    <td><?= $cliente['id'] ?></td>
+                    <td><?= htmlspecialchars($cliente['nome']) ?></td>
+                    <td><?= htmlspecialchars($cliente['endereco']) ?></td>
+                    <td><?= htmlspecialchars($cliente['contato']) ?></td>
                     <td>
-                        <a href="editar.php?id=<?= $produto['id'] ?>" class="btn btn-warning btn-sm">Editar</a>
-                        <a href="deletar.php?id=<?= $produto['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este produto?');">Deletar</a>
+                        <a href="editar.php?id=<?= $cliente['id'] ?>" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="deletar.php?id=<?= $cliente['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este cliente?');">Deletar</a>
                     </td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
-        
-        <!-- Exibir Botões de Navegação -->
-        <?php exibirBotoesNavegacao(); ?>
-       
-        
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
