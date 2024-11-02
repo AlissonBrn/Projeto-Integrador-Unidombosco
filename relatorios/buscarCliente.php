@@ -8,19 +8,20 @@ if (!isset($_SESSION['id'])) {
     exit;
 }
 
-// Obter o termo de pesquisa enviado via GET
-$termo = $_GET['termo'] ?? '';
-
-// Buscar clientes que correspondem ao termo
-$sql = "SELECT id, nome FROM clientes WHERE nome LIKE :termo LIMIT 10";
-$stmt = $pdo->prepare($sql);
-$stmt->execute(['termo' => "%$termo%"]);
-$clientes = $stmt->fetchAll();
-
-// Gerar as opções de clientes para o dropdown
-$options = '<option value="">Selecione um cliente</option>';
-foreach ($clientes as $cliente) {
-    $options .= '<option value="' . $cliente['id'] . '">' . htmlspecialchars($cliente['nome']) . '</option>';
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
+    $sql = "SELECT nome, endereco, email, telefone FROM clientes WHERE id = :id LIMIT 1";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['id' => $id]);
+    $cliente = $stmt->fetch(PDO::FETCH_ASSOC);
+    echo json_encode($cliente);
+    exit;
 }
 
-echo $options;
+$termo = $_GET['termo'] ?? '';
+$sql = "SELECT id, nome FROM clientes WHERE nome LIKE :termo ORDER BY nome LIMIT 10";
+$stmt = $pdo->prepare($sql);
+$stmt->execute(['termo' => "$termo%"]);
+$clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+echo json_encode($clientes);
