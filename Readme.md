@@ -8,7 +8,7 @@ Cadastro e gerenciamento de clientes
 
 Cadastro e gerenciamento produtos e estoque
 
-Geração de orçamentos -- 50%
+Geração de orçamentos -- 90%
 
 Gerenciamento de pedidos -- 30%
 
