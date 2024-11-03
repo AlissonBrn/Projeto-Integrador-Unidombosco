@@ -3,6 +3,11 @@ session_start();
 include '../db.php'; // Conexão com o banco de dados
 include '../funcoes.php'; // Inclui a função para exibir botões de navegação
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
 // Verificar se o usuário está logado
 if (!isset($_SESSION['id'])) {
     header("Location: ../login.php");

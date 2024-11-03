@@ -21,13 +21,44 @@ $nivelAcesso = $_SESSION['nivel_acesso'];
     <title>Sistema de Vendas - Página Inicial</title>
     <!-- Link do CSS do Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .header h1 {
+            font-weight: bold;
+        }
+        .card {
+            transition: transform 0.2s;
+            border: none;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .card-title {
+            color: #007bff;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body class="bg-light">
+
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">Sistema de Vendas</a>
-            <div class="collapse navbar-collapse">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     <?php if ($nivelAcesso === 'admin'): ?>
                         <li class="nav-item">
@@ -42,60 +73,71 @@ $nivelAcesso = $_SESSION['nivel_acesso'];
         </div>
     </nav>
 
-    <!-- Conteúdo Principal -->
+    <!-- Saudação e Cabeçalho -->
     <div class="container mt-5">
-        <div class="text-center mb-5">
-            <h1 class="display-4">Bem-vindo, <?= $nomeUsuario ?>!</h1>
+        <div class="header mb-5">
+            <h1>Bem-vindo, <?= $nomeUsuario ?>!</h1>
             <p class="lead">Acesse as áreas do sistema de vendas de produtos para laboratórios.</p>
         </div>
 
         <!-- Cartões de Seções -->
-        <div class="row g-4">
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body text-center">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            
+            <!-- Card Clientes -->
+            <div class="col">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
                         <h5 class="card-title">Clientes</h5>
                         <p class="card-text">Gerencie as informações dos clientes cadastrados.</p>
-                        <a href="clientes/listar.php" class="btn btn-primary">Acessar Clientes</a>
+                        <a href="clientes/listar.php" class="btn btn-primary w-100">Acessar Clientes</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body text-center">
+
+            <!-- Card Produtos -->
+            <div class="col">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
                         <h5 class="card-title">Produtos</h5>
                         <p class="card-text">Controle o estoque e detalhes dos produtos.</p>
-                        <a href="produtos/listar.php" class="btn btn-primary">Acessar Produtos</a>
+                        <a href="produtos/listar.php" class="btn btn-primary w-100">Acessar Produtos</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body text-center">
+
+            <!-- Card Pedidos -->
+            <div class="col">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
                         <h5 class="card-title">Pedidos</h5>
                         <p class="card-text">Acompanhe e gerencie os pedidos realizados.</p>
-                        <a href="pedidos/listar.php" class="btn btn-primary">Acessar Pedidos</a>
+                        <a href="pedidos/listar.php" class="btn btn-primary w-100">Acessar Pedidos</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body text-center">
+
+            <!-- Card Relatórios de Vendas -->
+            <div class="col">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
                         <h5 class="card-title">Relatórios de Vendas</h5>
                         <p class="card-text">Gere relatórios detalhados de vendas e pedidos.</p>
-                        <a href="relatorios/gerarRelatorio.php" class="btn btn-primary">Acessar Relatórios de Vendas</a>
+                        <a href="relatorios/gerarRelatorio.php" class="btn btn-primary w-100">Acessar Relatórios de Vendas</a>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 shadow-sm">
-                    <div class="card-body text-center">
+
+            <!-- Card Orçamentos -->
+            <div class="col">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
                         <h5 class="card-title">Orçamentos</h5>
                         <p class="card-text">Crie, visualize e exporte orçamentos para clientes.</p>
-                        <a href="relatorios/gerarOrcamento.php" class="btn btn-primary">Acessar Orçamentos</a>
+                        <a href="relatorios/gerarOrcamento.php" class="btn btn-primary w-100">Acessar Orçamentos</a>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 

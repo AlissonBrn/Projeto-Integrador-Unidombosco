@@ -1,13 +1,16 @@
 <?php
 session_start();
-include '../db.php'; // Conexão com o banco de dados
-include '../funcoes.php'; // Inclui funções auxiliares
+include '../db.php';
+include '../funcoes.php';
 
 // Verificar se o usuário está logado
 if (!isset($_SESSION['id'])) {
     header("Location: ../login.php");
     exit;
 }
+
+// Gerar o número do orçamento único ao carregar a página
+$numeroOrcamento = 'ORC-' . time();
 ?>
 
 <!DOCTYPE html>
@@ -15,16 +18,37 @@ if (!isset($_SESSION['id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerar Orçamento - Sistema de Vendas</title>
+    <title>Gerar Orçamento - Sistema de Vendas para Laboratórios</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        .hidden { display: none; }
+        body {
+            background-color: #f8f9fa;
+        }
+        .card {
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+        }
+        .header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            border-radius: 0 0 10px 10px;
+        }
     </style>
 </head>
 <body class="bg-light">
     <div class="container mt-5">
         <h2 class="mb-4 text-center">Geração de Orçamento</h2>
+        
+        <!-- Mostrar Número do Orçamento -->
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5>Número do Orçamento: <span id="numero_orcamento"><?php echo htmlspecialchars($numeroOrcamento); ?></span></h5>
+            </div>
+        </div>
 
         <!-- Seção de Informações do Cliente -->
         <div class="card mb-4">
@@ -62,9 +86,6 @@ if (!isset($_SESSION['id'])) {
                         <input type="text" id="pesquisa_produto" class="form-control" placeholder="Digite o nome ou código do produto...">
                         <small class="text-muted">Digite "geral" para adicionar um produto manualmente</small>
                         <div id="lista_produtos" class="mt-2"></div>
-                    </div>
-                    <div class="col-md-2">
-                        <button type="button" class="btn btn-primary mt-4" id="adicionar_produto">Adicionar Produto</button>
                     </div>
                 </div>
             </div>
@@ -120,6 +141,7 @@ if (!isset($_SESSION['id'])) {
     </div>
 
     <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function () {
             let totalOrcamento = 0;
@@ -179,18 +201,18 @@ if (!isset($_SESSION['id'])) {
                 }
             });
 
-            // Captura a ação de adicionar o produto com quantidade definida
+            // Captura a ação de adicionar o produto com quantidade e valor definidos
             $(document).on('click', '.btn-add-produto', function () {
                 let produtoId = $(this).data('id');
                 let produtoNome = $(this).data('nome');
-                let produtoPreco = parseFloat($(this).data('preco'));
+                let produtoPreco = parseFloat($(this).closest('li').find('.valor-unitario-produto').val());
                 let quantidade = parseInt($(this).closest('li').find('.quantidade-produto').val());
 
-                if (quantidade > 0) {
+                if (quantidade > 0 && produtoPreco > 0) {
                     adicionarProdutoAoOrcamento(produtoId, produtoNome, quantidade, produtoPreco);
-                    $('#lista_produtos').empty(); // Limpar a lista após adição
+                    $('#lista_produtos').empty();
                 } else {
-                    alert("Por favor, insira uma quantidade válida.");
+                    alert("Por favor, insira uma quantidade e um valor unitário válidos.");
                 }
             });
 
@@ -218,7 +240,7 @@ if (!isset($_SESSION['id'])) {
 
                 if (nome && quantidade > 0 && valorUnitario > 0) {
                     adicionarProdutoAoOrcamento('manual', nome, quantidade, valorUnitario);
-                    $('#lista_produtos').empty(); // Limpar formulário manual após adicionar
+                    $('#lista_produtos').empty();
                 } else {
                     alert('Por favor, preencha o nome, a quantidade e o valor unitário do produto manual.');
                 }
@@ -252,6 +274,42 @@ if (!isset($_SESSION['id'])) {
                 $(this).text(function(i, text){
                     return text === "Esconder Produtos" ? "Exibir Produtos" : "Esconder Produtos";
                 });
+            });
+
+            // Função para finalizar o orçamento e enviar para salvar
+            $('#finalizar_orcamento').click(function () {
+                let numeroOrcamento = $('#numero_orcamento').text(); // Obter o número do orçamento
+                let data = new Date().toISOString().split('T')[0]; // Data atual
+                let valorTotal = parseFloat($('#total_orcamento').text());
+
+                let orcamento = {
+                    numero_orcamento: numeroOrcamento,
+                    data: data,
+                    id_cliente: $('#nome_cliente').data('id'),
+                    valor_total: valorTotal,
+                    itens: []
+                };
+
+                $('#lista_produtos_orcamento .d-flex').each(function () {
+                    let id = $(this).data('id');
+                    let quantidade = $(this).find('.quantidade').text();
+                    let valorUnitario = $(this).find('.valor-unitario').text();
+
+                    orcamento.itens.push({
+                        id_produto: id,
+                        quantidade: parseInt(quantidade),
+                        valor_unitario: parseFloat(valorUnitario),
+                        valor_total: parseFloat(valorUnitario) * parseInt(quantidade)
+                    });
+                });
+
+                $.post('salvarOrcamento.php', orcamento, function (response) {
+                    if (response.success) {
+                        window.location.href = 'relatorioOrcamento.php?numero_orcamento=' + numeroOrcamento;
+                    } else {
+                        alert('Erro ao salvar o orçamento.');
+                    }
+                }, 'json');
             });
         });
     </script>
