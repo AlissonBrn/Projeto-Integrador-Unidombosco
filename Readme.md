@@ -12,7 +12,7 @@ Geração de orçamentos -- 90%
 
 Gerenciamento de pedidos -- 30%
 
-Relatórios de Vendas -- 50%
+Relatórios de vendas e orçamentos para pdf com o fpdf
 
 Sistema de login para os colaboradores
 
