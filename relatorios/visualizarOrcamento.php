@@ -1,98 +1,76 @@
 <?php
 session_start();
-include '../db.php'; // Conexão com o banco de dados
-include '../funcoes.php'; // Inclui a função para exibir botões de navegação
+include '../db.php';
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-
-// Verificar se o usuário está logado
+// Verifica se o colaborador está logado
 if (!isset($_SESSION['id'])) {
     header("Location: ../login.php");
     exit;
 }
 
-// Obter o ID do orçamento
-$id_orcamento = $_GET['id'] ?? null;
+$id_orcamento = $_GET['id'];
 
-// Buscar detalhes do orçamento e informações do cliente
-$sql_orcamento = "
-    SELECT o.*, c.nome AS cliente_nome, c.endereco AS cliente_endereco
-    FROM orcamentos o
-    JOIN clientes c ON o.id_cliente = c.id
-    WHERE o.id = :id";
-$stmt = $pdo->prepare($sql_orcamento);
-$stmt->execute(['id' => $id_orcamento]);
-$orcamento = $stmt->fetch();
+// Consulta o orçamento e os itens associados
+$sqlOrcamento = "SELECT * FROM orcamentos WHERE id = :id_orcamento";
+$stmtOrcamento = $pdo->prepare($sqlOrcamento);
+$stmtOrcamento->execute(['id_orcamento' => $id_orcamento]);
+$orcamento = $stmtOrcamento->fetch(PDO::FETCH_ASSOC);
 
-if (!$orcamento) {
-    echo "Orçamento não encontrado.";
-    exit;
-}
-
-// Buscar produtos do orçamento
-$sql_produtos = "
-    SELECT p.nome, p.marca, io.quantidade, io.valor_unitario
-    FROM itens_orcamento io
-    JOIN produtos p ON io.id_produto = p.id
-    WHERE io.id_orcamento = :id";
-$stmt = $pdo->prepare($sql_produtos);
-$stmt->execute(['id' => $id_orcamento]);
-$produtos = $stmt->fetchAll();
+$sqlItens = "SELECT io.id, 
+                    p.nome AS nome_produto, 
+                    io.nome_personalizado, 
+                    io.quantidade, 
+                    io.valor_unitario 
+             FROM itens_orcamento io 
+             JOIN produtos p ON io.id_produto = p.id 
+             WHERE io.id_orcamento = :id_orcamento";
+$stmtItens = $pdo->prepare($sqlItens);
+$stmtItens->execute(['id_orcamento' => $id_orcamento]);
+$itens = $stmtItens->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detalhes do Orçamento - Sistema de Vendas</title>
+    <title>Visualizar Orçamento</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
     <div class="container mt-5">
-        <h2 class="mb-4">Detalhes do Orçamento</h2>
-        <p><strong>Número do Orçamento:</strong> <?= htmlspecialchars($orcamento['numero_orcamento']) ?></p>
-        <p><strong>Data:</strong> <?= date('d/m/Y', strtotime($orcamento['data'])) ?></p>
-        <p><strong>Cliente:</strong> <?= htmlspecialchars($orcamento['cliente_nome']) ?></p>
-        <p><strong>Endereço do Cliente:</strong> <?= htmlspecialchars($orcamento['cliente_endereco']) ?></p>
-        <p><strong>Validade:</strong> <?= htmlspecialchars($orcamento['validade']) ?> dias</p>
-        <p><strong>Prazo de Entrega:</strong> <?= htmlspecialchars($orcamento['prazo_entrega']) ?></p>
-        <p><strong>Valor Total:</strong> R$ <?= number_format($orcamento['valor_total'], 2, ',', '.') ?></p>
-
-        <h4 class="mt-4">Produtos</h4>
-        <table class="table table-bordered table-striped">
-            <thead class="table-dark">
+        <h2>Orçamento #<?= htmlspecialchars($orcamento['id']) ?></h2>
+        <p>Data: <?= date('d/m/Y', strtotime($orcamento['data_criacao'])) ?></p>
+        <p>Valor Total: R$ <?= number_format($orcamento['valor_total'], 2, ',', '.') ?></p>
+        <a href="adicionarItensOrcamento.php?id_orcamento=<?= htmlspecialchars($orcamento['id']) ?>" class="btn btn-primary mb-3">Adicionar Item</a>
+        
+        <table class="table">
+            <thead>
                 <tr>
                     <th>Produto</th>
-                    <th>Marca</th>
                     <th>Quantidade</th>
                     <th>Valor Unitário</th>
-                    <th>Subtotal</th>
+                    <th>Valor Total</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($produtos as $produto): ?>
+                <?php foreach ($itens as $item): ?>
                     <tr>
-                        <td><?= htmlspecialchars($produto['nome']) ?></td>
-                        <td><?= htmlspecialchars($produto['marca']) ?></td>
-                        <td><?= $produto['quantidade'] ?></td>
-                        <td>R$ <?= number_format($produto['valor_unitario'], 2, ',', '.') ?></td>
-                        <td>R$ <?= number_format($produto['valor_unitario'] * $produto['quantidade'], 2, ',', '.') ?></td>
+                        <!-- Exibir o nome personalizado, se presente, caso contrário, mostrar o nome do produto -->
+                        <td><?= htmlspecialchars($item['nome_personalizado'] ?: $item['nome_produto']) ?></td>
+                        <td><?= htmlspecialchars($item['quantidade']) ?></td>
+                        <td>R$ <?= number_format($item['valor_unitario'], 2, ',', '.') ?></td>
+                        <td>R$ <?= number_format($item['quantidade'] * $item['valor_unitario'], 2, ',', '.') ?></td>
+                        <td>
+                            <a href="removerItemOrcamento.php?id=<?= htmlspecialchars($item['id']) ?>&id_orcamento=<?= htmlspecialchars($id_orcamento) ?>" class="btn btn-danger btn-sm">Remover</a>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
-        <a href="gerarRelatorio.php" class="btn btn-secondary mt-3">Voltar</a>
         
-        <!-- Exibir Botões de Navegação -->
-        <?php exibirBotoesNavegacao(); ?>
-        
-        
+        <a href="finalizarOrcamento.php?id=<?= htmlspecialchars($id_orcamento) ?>" class="btn btn-success">Finalizar Orçamento</a>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

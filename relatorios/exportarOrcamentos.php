@@ -3,7 +3,7 @@ session_start();
 include '../db.php';
 require '../fpdf/fpdf.php';
 
-if (!isset($_GET['id'])) {
+if (!isset($_GET_ALL['id'])) {
     echo "ID do orçamento não fornecido.";
     exit;
 }
