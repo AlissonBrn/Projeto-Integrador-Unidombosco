@@ -1,19 +1,30 @@
-Projeto Integrador ADS Unidombosco
-- Sistema de gerenciamento de vendas para uma empresa de produtos para laboratorio.
-- Criado utilizando PHP, CSS, Js e o framework Bootstrap para o visual do projeto.
-- Banco de dados em .sql
-- Funcionalidades adicionadas ao projeto:
+# Projeto Integrador ADS - Unidombosco
 
-Cadastro e gerenciamento de clientes e funcionarios
+Um sistema simples de gerenciamento de vendas para uma empresa de produtos para laboratórios. 
 
-Cadastro e gerenciamento produtos e estoque
+## Tecnologias Utilizadas
 
-Geração de orçamentos 
+- **PHP**
+- **CSS**
+- **JavaScript**
+- **Bootstrap**
+- **MySQL**
+- **FPDF**
 
-Criação de pedidos 
+## Funcionalidades
 
-Relatórios de vendas e orçamentos para pdf com o fpdf
+O sistema as seguintes funcionalidades para gerenciar a operação da empresa:
 
-Sistema de login para os colaboradores
+- **Cadastro e Gerenciamento de Clientes e Funcionários**: Permite cadastrar, editar e excluir informações de clientes e funcionários.
+- **Cadastro e Gerenciamento de Produtos e Estoque**: Facilita o controle de inventário e informações dos produtos.
+- **Geração de Orçamentos**: Possibilita a criação e personalização de orçamentos para clientes.
+- **Criação de Pedidos**: Permite a criação de pedidos de venda para clientes.
+- **Relatórios em PDF**: Geração de relatórios de vendas e orçamentos utilizando a biblioteca FPDF.
+- **Sistema de Login para Colaboradores**: Controle de acesso com login para colaboradores do sistema.
+- **Página do Administrador**: Área restrita para o administrador do sistema, com controle total sobre todas as funcionalidades.
 
-Página do administrador
+## Referências
+
+- [Bootstrap](https://getbootstrap.com/): Framework CSS para desenvolvimento de interfaces responsivas.
+- [FPDF](http://www.fpdf.org/): Biblioteca PHP para a criação de documentos PDF.
+- [PHP Manual](https://www.php.net/manual/pt_BR): Documentação oficial do PHP.
