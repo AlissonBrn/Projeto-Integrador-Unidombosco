@@ -8,7 +8,7 @@ Um sistema simples de gerenciamento de vendas para uma empresa de produtos para 
 - **CSS**
 - **JavaScript**
 - **Bootstrap**
-- **MySQL**
+- **Bando de dados compatível com o MySQL**
 - **FPDF**
 
 ## Funcionalidades
