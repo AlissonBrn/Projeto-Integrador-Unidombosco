@@ -28,3 +28,10 @@ O sistema as seguintes funcionalidades para gerenciar a operação da empresa:
 - [Bootstrap](https://getbootstrap.com/): Framework CSS para desenvolvimento de interfaces responsivas.
 - [FPDF](http://www.fpdf.org/): Biblioteca PHP para a criação de documentos PDF.
 - [PHP Manual](https://www.php.net/manual/pt_BR): Documentação oficial do PHP.
+
+## Versão de demonstração ##
+
+http://navelab2.hospedagemdesites.ws/login.php
+
+Usuário: teste1
+Senha: Teste1@
