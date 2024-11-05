@@ -6,9 +6,10 @@ Um sistema simples de gerenciamento de vendas para uma empresa de produtos para 
 
 - **PHP**
 - **CSS**
+- **HTML**
 - **JavaScript**
 - **Bootstrap**
-- **Bando de dados compatível com o MySQL**
+- **Banco de dados compatível com o MySQL**
 - **FPDF**
 
 ## Funcionalidades
