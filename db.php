@@ -2,7 +2,7 @@
 // db.php
 $host = 'sistema_labor.mysql.dbaas.com.br';
 $user = 'sistema_labor';
-$password = 'i26E2gH@';
+$password = 'xxxxxxx';
 $dbname = 'sistema_labor';
 
 try {
