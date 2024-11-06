@@ -32,7 +32,7 @@ O sistema as seguintes funcionalidades para gerenciar a operação da empresa:
 
 ## Versão de demonstração ##
 
-http://navelab2.hospedagemdesites.ws/login.php
+https://navelab2.hospedagemdesites.ws/login.php
 
 Usuário: teste1
 Senha: Teste1@
