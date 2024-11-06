@@ -1,6 +1,7 @@
 <?php
 session_start();
 include '../db.php'; // Conexão com o banco de dados
+include '../funcoes.php'; 
 
 // Verificar se o colaborador está logado
 if (!isset($_SESSION['id'])) {
@@ -96,6 +97,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <button type="submit" class="btn btn-primary">Adicionar Item</button>
             <a href="visualizarOrcamento.php?id=<?= $id_orcamento ?>" class="btn btn-secondary">Voltar ao Orçamento</a>
         </form>
+        
+        <!-- Exibir Botões de Navegação -->
+        <?php exibirBotoesNavegacao(); ?>
+        
     </div>
 
     <!-- Script do Bootstrap -->

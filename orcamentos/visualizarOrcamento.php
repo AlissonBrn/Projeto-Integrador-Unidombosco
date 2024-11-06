@@ -61,7 +61,6 @@ $itens = $stmtItens->fetchAll(PDO::FETCH_ASSOC);
             <tbody>
                 <?php foreach ($itens as $item): ?>
                     <tr>
-                        <!-- Exibir o nome personalizado, se presente, caso contrário, mostrar o nome do produto -->
                         <td><?= htmlspecialchars($item['nome_personalizado'] ?: $item['nome_produto']) ?></td>
                         <td><?= htmlspecialchars($item['quantidade']) ?></td>
                         <td>R$ <?= number_format($item['valor_unitario'], 2, ',', '.') ?></td>
@@ -74,8 +73,9 @@ $itens = $stmtItens->fetchAll(PDO::FETCH_ASSOC);
             </tbody>
         </table>
         
-        <a href="imprimirOrcamento.php?id=<?= htmlspecialchars($id_orcamento) ?>" class="btn btn-success">Imprimir Orçamento</a>
-        
+        <a href="finalizarOrcamento.php?id=<?= htmlspecialchars($id_orcamento) ?>" class="btn btn-success">Confirmar Orçamento</a>
+        <a href="excluirOrcamento.php?id=<?= htmlspecialchars($id_orcamento) ?>" class="btn btn-danger" onclick="return confirm('Tem certeza que deseja excluir este orçamento? Esta ação não pode ser desfeita.')">Excluir Orçamento</a>
+
         <!-- Exibir Botões de Navegação -->
         <?php exibirBotoesNavegacao(); ?>
         

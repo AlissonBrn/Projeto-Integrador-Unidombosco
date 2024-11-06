@@ -8,17 +8,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id_cliente = $_POST['id_cliente'];
     $validade = $_POST['validade'];
     $prazo_entrega = $_POST['prazo_entrega'];
+    $forma_pagamento = $_POST['forma_pagamento']; // Recebe a forma de pagamento do formulário
     $data = date("Y-m-d");
 
-    // Insere o orçamento no banco de dados
-    $sql = "INSERT INTO orcamentos (numero_orcamento, data, validade, prazo_entrega, id_cliente, valor_total) 
-            VALUES (UUID_SHORT(), :data, :validade, :prazo_entrega, :id_cliente, 0.00)";
+    // Insere o orçamento no banco de dados com a nova coluna forma_pagamento
+    $sql = "INSERT INTO orcamentos (numero_orcamento, data, validade, prazo_entrega, id_cliente, valor_total, forma_pagamento) 
+            VALUES (UUID_SHORT(), :data, :validade, :prazo_entrega, :id_cliente, 0.00, :forma_pagamento)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([
         'data' => $data,
         'validade' => $validade,
         'prazo_entrega' => $prazo_entrega,
-        'id_cliente' => $id_cliente
+        'id_cliente' => $id_cliente,
+        'forma_pagamento' => $forma_pagamento
     ]);
     $id_orcamento = $pdo->lastInsertId();
 
@@ -59,6 +61,18 @@ $clientes = $pdo->query("SELECT id, nome FROM clientes")->fetchAll(PDO::FETCH_AS
             <div class="mb-3">
                 <label for="prazo_entrega" class="form-label">Prazo de Entrega</label>
                 <input type="text" id="prazo_entrega" name="prazo_entrega" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="forma_pagamento" class="form-label">Forma de Pagamento</label>
+                <select id="forma_pagamento" name="forma_pagamento" class="form-select" required>
+                    <option value="">Selecione a forma de pagamento</option>
+                    <option value="Boleto">Boleto</option>
+                    <option value="Dinheiro">Dinheiro</option>
+                    <option value="Cartão Crédito">Cartão Crédito</option>
+                    <option value="Cartão Débito">Cartão Débito</option>
+                    <option value="Pix">Pix</option>
+                    <option value="Crédito na Empresa">Crédito na Empresa</option>
+                </select>
             </div>
             <button type="submit" class="btn btn-primary">Criar Orçamento</button>
         </form>
