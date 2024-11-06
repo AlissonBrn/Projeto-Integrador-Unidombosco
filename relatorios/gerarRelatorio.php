@@ -17,7 +17,7 @@ if (!isset($_SESSION['id'])) {
 $sqlOrcamentos = "SELECT o.id, o.data_criacao, o.valor_total, c.nome AS cliente_nome
                   FROM orcamentos o
                   JOIN clientes c ON o.id_cliente = c.id
-                  WHERE o.status = 'finalizado'
+                  WHERE o.status = 'imprimir'
                   ORDER BY o.data_criacao DESC";
 $stmtOrcamentos = $pdo->prepare($sqlOrcamentos);
 $stmtOrcamentos->execute();

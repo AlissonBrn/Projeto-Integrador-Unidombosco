@@ -18,7 +18,7 @@ $nivelAcesso = $_SESSION['nivel_acesso'];
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Vendas - Página Inicial</title>
+    <title>Projeto Sistema de Vendas - Página Inicial</title>
     <!-- Link do CSS do Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
@@ -120,8 +120,8 @@ $nivelAcesso = $_SESSION['nivel_acesso'];
             <div class="col">
                 <div class="card h-100 text-center">
                     <div class="card-body">
-                        <h5 class="card-title">Relatórios de Vendas</h5>
-                        <p class="card-text">Gere relatórios detalhados de vendas e pedidos.</p>
+                        <h5 class="card-title">Geração dos Relatórios</h5>
+                        <p class="card-text">Gere os orçamentos e relatórios detalhados de vendas e pedidos em .pdf.</p>
                         <a href="relatorios/gerarRelatorio.php" class="btn btn-primary w-100">Acessar Relatórios de Vendas</a>
                     </div>
                 </div>
@@ -132,8 +132,19 @@ $nivelAcesso = $_SESSION['nivel_acesso'];
                 <div class="card h-100 text-center">
                     <div class="card-body">
                         <h5 class="card-title">Orçamentos</h5>
-                        <p class="card-text">Crie, visualize e exporte orçamentos para clientes.</p>
+                        <p class="card-text">Espaço destinado a criação dos orçamentos para clientes.</p>
                         <a href="relatorios/gerarOrcamento.php" class="btn btn-primary w-100">Acessar Orçamentos</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Listagem de Orçamentos -->
+            <div class="col">
+                <div class="card h-100 text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Listar e Confirmar Orçamentos</h5>
+                        <p class="card-text">Confirme, modifique ou remova orçamentos já cadastrados.</p>
+                        <a href="orcamentos/listarOrcamento.php" class="btn btn-primary w-100">Acessar Listagem de Orçamentos</a>
                     </div>
                 </div>
             </div>

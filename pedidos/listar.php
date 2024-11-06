@@ -1,38 +1,65 @@
 <?php
-// Incluir o arquivo de conexão com o banco de dados
+session_start();
 include '../db.php';
+include '../funcoes.php'; 
 
-// Consultar todos os pedidos e os clientes associados
-$sql = "SELECT pedidos.id, pedidos.data_pedido, pedidos.status, pedidos.total, clientes.nome AS cliente_nome
-        FROM pedidos
-        JOIN clientes ON pedidos.id_cliente = clientes.id";
-$stmt = $pdo->query($sql);
-$pedidos = $stmt->fetchAll();
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
+// Verifica se o colaborador está logado
+if (!isset($_SESSION['id'])) {
+    header("Location: ../login.php");
+    exit;
+}
+
+// Consulta os pedidos (orcamentos finalizados)
+$sqlPedidos = "SELECT o.id, o.numero_orcamento, o.forma_pagamento, o.valor_total, o.data_criacao
+               FROM orcamentos o
+               WHERE o.status = 'finalizado'";
+$stmtPedidos = $pdo->prepare($sqlPedidos);
+$stmtPedidos->execute();
+$pedidos = $stmtPedidos->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
-<!-- Tabela de Pedidos -->
-<h2>Lista de Pedidos</h2>
-<a href="adicionar.php">Adicionar Novo Pedido</a>
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Cliente</th>
-        <th>Data do Pedido</th>
-        <th>Status</th>
-        <th>Total (R$)</th>
-        <th>Ações</th>
-    </tr>
-    <?php foreach ($pedidos as $pedido): ?>
-    <tr>
-        <td><?= $pedido['id'] ?></td>
-        <td><?= htmlspecialchars($pedido['cliente_nome']) ?></td>
-        <td><?= date("d/m/Y H:i", strtotime($pedido['data_pedido'])) ?></td>
-        <td><?= htmlspecialchars($pedido['status']) ?></td>
-        <td><?= number_format($pedido['total'], 2, ',', '.') ?></td>
-        <td>
-            <a href="editar.php?id=<?= $pedido['id'] ?>" class="btn btn-edit">Editar</a>
-            <a href="deletar.php?id=<?= $pedido['id'] ?>" class="btn btn-delete" onclick="return confirm('Tem certeza que deseja excluir este pedido?');">Deletar</a>
-        </td>
-    </tr>
-    <?php endforeach; ?>
-</table>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Listar Pedidos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <h2>Pedidos</h2>
+        
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Número do Pedido</th>
+                    <th>Forma de Pagamento</th>
+                    <th>Data</th>
+                    <th>Valor Total</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($pedidos as $pedido): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($pedido['numero_orcamento']) ?></td>
+                        <td><?= htmlspecialchars($pedido['forma_pagamento']) ?></td>
+                        <td><?= date('d/m/Y', strtotime($pedido['data_criacao'])) ?></td>
+                        <td>R$ <?= number_format($pedido['valor_total'], 2, ',', '.') ?></td>
+                        <td>
+                            <a href="visualizarPedido.php?id=<?= $pedido['id'] ?>" class="btn btn-primary btn-sm">Visualizar</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+
+        <?php exibirBotoesNavegacao(); ?>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
