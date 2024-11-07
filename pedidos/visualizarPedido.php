@@ -6,7 +6,6 @@ ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
 
-
 // Verifica se o colaborador está logado
 if (!isset($_SESSION['id'])) {
     header("Location: ../login.php");
@@ -55,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['liberar_pedido'])) {
             $stmtAtualizarEstoque = $pdo->prepare($sqlAtualizarEstoque);
             $stmtAtualizarEstoque->execute([
                 'novaQuantidade' => $novaQuantidade,
-                'produtoId' => $item['produto_id']
+                'produtoId' => $item['id_produto']
             ]);
         }
 
@@ -115,14 +114,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['cancelar_pedido'])) {
                 <tr>
                     <td><?= htmlspecialchars($item['produto_nome']) ?></td>
                     <td><?= $item['quantidade'] ?></td>
-                    <td>R$ <?= number_format($item['preco_unitario'], 2, ',', '.') ?></td>
-                    <td>R$ <?= number_format($item['quantidade'] * $item['preco_unitario'], 2, ',', '.') ?></td>
+                    <td>
+                        <?php
+                        $precoUnitario = $item['valor_unitario'] ?? 0; // Define 0 como padrão caso o índice não exista
+                        echo "R$ " . number_format((float)$precoUnitario, 2, ',', '.');
+                        ?>
+                    </td>
+                    <td>
+                        <?php
+                        $totalItem = $item['quantidade'] * (float)$precoUnitario;
+                        echo "R$ " . number_format($totalItem, 2, ',', '.');
+                        ?>
+                    </td>
                 </tr>
                 <?php endforeach; ?>
             </tbody>
         </table>
 
-        <h4>Total do Pedido: R$ <?= number_format($pedido['valor_total'], 2, ',', '.') ?></h4>
+        <h4>Total do Pedido: R$ <?= number_format($pedido['valor_total'] ?? 0, 2, ',', '.') ?></h4>
 
         <form method="post">
             <button type="submit" name="liberar_pedido" class="btn btn-success">Liberar Pedido</button>

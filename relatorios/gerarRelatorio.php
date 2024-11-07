@@ -22,6 +22,18 @@ $sqlOrcamentos = "SELECT o.id, o.data_criacao, o.valor_total, c.nome AS cliente_
 $stmtOrcamentos = $pdo->prepare($sqlOrcamentos);
 $stmtOrcamentos->execute();
 $orcamentos = $stmtOrcamentos->fetchAll(PDO::FETCH_ASSOC);
+
+//Correção do status pendente
+
+$sqlOrcamentos = "SELECT o.id, o.data_criacao, o.valor_total, c.nome AS cliente_nome
+                  FROM orcamentos o
+                  JOIN clientes c ON o.id_cliente = c.id
+                  WHERE o.status = 'pendente'
+                  ORDER BY o.data_criacao DESC";
+$stmtOrcamentos = $pdo->prepare($sqlOrcamentos);
+$stmtOrcamentos->execute();
+$orcamentos = $stmtOrcamentos->fetchAll(PDO::FETCH_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
