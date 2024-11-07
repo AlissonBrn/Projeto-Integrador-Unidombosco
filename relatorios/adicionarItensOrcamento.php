@@ -1,7 +1,7 @@
 <?php
 session_start();
-include '../db.php'; // Conexão com o banco de dados
-include '../funcoes.php'; 
+include '../db.php';
+include '../funcoes.php';
 
 // Verificar se o colaborador está logado
 if (!isset($_SESSION['id'])) {
@@ -34,9 +34,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmtPreco->execute(['id_produto' => $id_produto]);
     $precoUnitario = $stmtPreco->fetchColumn();
 
-    // Calcular o valor total do item
-    $valor_total_item = $precoUnitario * $quantidade;
-
     // Inserir o item no orçamento, incluindo o nome personalizado, se fornecido
     $sqlInserirItem = "INSERT INTO itens_orcamento (id_orcamento, id_produto, quantidade, valor_unitario, nome_personalizado)
                        VALUES (:id_orcamento, :id_produto, :quantidade, :valor_unitario, :nome_personalizado)";
@@ -49,14 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         'nome_personalizado' => $nome_personalizado ? $nome_personalizado : null
     ]);
 
-    // Atualizar o valor total do orçamento
-    $sqlAtualizarOrcamento = "UPDATE orcamentos SET valor_total = valor_total + :valor_total_item WHERE id = :id_orcamento";
-    $stmtAtualizarOrcamento = $pdo->prepare($sqlAtualizarOrcamento);
-    $stmtAtualizarOrcamento->execute([
-        'valor_total_item' => $valor_total_item,
-        'id_orcamento' => $id_orcamento
-    ]);
-
+    // Redirecionar para a página de visualização do orçamento
     header("Location: visualizarOrcamento.php?id=$id_orcamento");
     exit;
 }

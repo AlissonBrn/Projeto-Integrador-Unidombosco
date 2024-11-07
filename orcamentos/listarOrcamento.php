@@ -9,10 +9,11 @@ if (!isset($_SESSION['id'])) {
     exit;
 }
 
-// Consulta todos os orçamentos
+// Consulta todos os orçamentos, exceto os com status 'liberado'
 $sqlOrcamentos = "SELECT o.id, o.data_criacao, o.valor_total, o.status, c.nome AS cliente_nome
                   FROM orcamentos o
                   JOIN clientes c ON o.id_cliente = c.id
+                  WHERE o.status != 'liberado'
                   ORDER BY o.data_criacao DESC";
 $stmtOrcamentos = $pdo->prepare($sqlOrcamentos);
 $stmtOrcamentos->execute();
@@ -70,7 +71,7 @@ $orcamentos = $stmtOrcamentos->fetchAll(PDO::FETCH_ASSOC);
                                 <a href="excluirOrcamento.php?id=<?= $orcamento['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja excluir este orçamento?')">Excluir</a>
                             <?php else: ?>
                                 <a href="visualizarOrcamento.php?id=<?= $orcamento['id'] ?>" class="btn btn-secondary btn-sm">Visualizar</a>
-                                <span class="text-muted">Finalizado</span>
+                                <span class="text-muted"></span>
                             <?php endif; ?>
                         </td>
                     </tr>

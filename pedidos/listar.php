@@ -1,7 +1,7 @@
 <?php
 session_start();
 include '../db.php';
-include '../funcoes.php'; 
+include '../funcoes.php';
 
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
@@ -13,13 +13,21 @@ if (!isset($_SESSION['id'])) {
     exit;
 }
 
-// Consulta os pedidos (orcamentos finalizados)
-$sqlPedidos = "SELECT o.id, o.numero_orcamento, o.forma_pagamento, o.valor_total, o.data_criacao
-               FROM orcamentos o
-               WHERE o.status = 'finalizado'";
-$stmtPedidos = $pdo->prepare($sqlPedidos);
-$stmtPedidos->execute();
-$pedidos = $stmtPedidos->fetchAll(PDO::FETCH_ASSOC);
+// Consulta os pedidos liberados
+$sqlPedidosLiberados = "SELECT o.id, o.numero_orcamento, o.forma_pagamento, o.valor_total, o.data_criacao
+                        FROM orcamentos o
+                        WHERE o.status = 'liberado'";
+$stmtPedidosLiberados = $pdo->prepare($sqlPedidosLiberados);
+$stmtPedidosLiberados->execute();
+$pedidosLiberados = $stmtPedidosLiberados->fetchAll(PDO::FETCH_ASSOC);
+
+// Consulta os pedidos finalizados, mas não liberados
+$sqlPedidosNaoLiberados = "SELECT o.id, o.numero_orcamento, o.forma_pagamento, o.valor_total, o.data_criacao
+                           FROM orcamentos o
+                           WHERE o.status = 'finalizado'";
+$stmtPedidosNaoLiberados = $pdo->prepare($sqlPedidosNaoLiberados);
+$stmtPedidosNaoLiberados->execute();
+$pedidosNaoLiberados = $stmtPedidosNaoLiberados->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -33,30 +41,65 @@ $pedidos = $stmtPedidos->fetchAll(PDO::FETCH_ASSOC);
     <div class="container mt-5">
         <h2>Pedidos</h2>
         
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Número do Pedido</th>
-                    <th>Forma de Pagamento</th>
-                    <th>Data</th>
-                    <th>Valor Total</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($pedidos as $pedido): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($pedido['numero_orcamento']) ?></td>
-                        <td><?= htmlspecialchars($pedido['forma_pagamento']) ?></td>
-                        <td><?= date('d/m/Y', strtotime($pedido['data_criacao'])) ?></td>
-                        <td>R$ <?= number_format($pedido['valor_total'], 2, ',', '.') ?></td>
-                        <td>
-                            <a href="visualizarPedido.php?id=<?= $pedido['id'] ?>" class="btn btn-primary btn-sm">Visualizar</a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+        <div class="row">
+            <!-- Coluna para pedidos liberados -->
+            <div class="col-md-6">
+                <h3>Pedidos Liberados</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Número do Pedido</th>
+                            <th>Forma de Pagamento</th>
+                            <th>Data</th>
+                            <th>Valor Total</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($pedidosLiberados as $pedido): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($pedido['numero_orcamento']) ?></td>
+                                <td><?= htmlspecialchars($pedido['forma_pagamento']) ?></td>
+                                <td><?= date('d/m/Y', strtotime($pedido['data_criacao'])) ?></td>
+                                <td>R$ <?= number_format($pedido['valor_total'], 2, ',', '.') ?></td>
+                                <td>
+                                    <a href="visualizarPedido.php?id=<?= $pedido['id'] ?>" class="btn btn-primary btn-sm">Visualizar</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Coluna para pedidos não liberados -->
+            <div class="col-md-6">
+                <h3>Pedidos Não Liberados</h3>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Número do Pedido</th>
+                            <th>Forma de Pagamento</th>
+                            <th>Data</th>
+                            <th>Valor Total</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach ($pedidosNaoLiberados as $pedido): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($pedido['numero_orcamento']) ?></td>
+                                <td><?= htmlspecialchars($pedido['forma_pagamento']) ?></td>
+                                <td><?= date('d/m/Y', strtotime($pedido['data_criacao'])) ?></td>
+                                <td>R$ <?= number_format($pedido['valor_total'], 2, ',', '.') ?></td>
+                                <td>
+                                    <a href="visualizarPedido.php?id=<?= $pedido['id'] ?>" class="btn btn-primary btn-sm">Visualizar</a>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
         <?php exibirBotoesNavegacao(); ?>
     </div>

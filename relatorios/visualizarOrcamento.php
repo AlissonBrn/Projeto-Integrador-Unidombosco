@@ -45,9 +45,12 @@ $itens = $stmtItens->fetchAll(PDO::FETCH_ASSOC);
     <div class="container mt-5">
         <h2>Orçamento #<?= htmlspecialchars($orcamento['id']) ?></h2>
         <p>Data: <?= date('d/m/Y', strtotime($orcamento['data_criacao'])) ?></p>
-        <p>Valor Total: R$ <?= number_format($orcamento['valor_total'], 2, ',', '.') ?></p>
-        <a href="adicionarItensOrcamento.php?id_orcamento=<?= htmlspecialchars($orcamento['id']) ?>" class="btn btn-primary mb-3">Adicionar Item</a>
-        
+
+        <?php
+        // Inicializa o valor total calculado
+        $valor_total_calculado = 0;
+        ?>
+
         <table class="table">
             <thead>
                 <tr>
@@ -60,12 +63,16 @@ $itens = $stmtItens->fetchAll(PDO::FETCH_ASSOC);
             </thead>
             <tbody>
                 <?php foreach ($itens as $item): ?>
+                    <?php
+                    // Calcular o total do item e somar ao valor total
+                    $total_item = $item['quantidade'] * $item['valor_unitario'];
+                    $valor_total_calculado += $total_item;
+                    ?>
                     <tr>
-                        <!-- Exibir o nome personalizado, se presente, caso contrário, mostrar o nome do produto -->
                         <td><?= htmlspecialchars($item['nome_personalizado'] ?: $item['nome_produto']) ?></td>
                         <td><?= htmlspecialchars($item['quantidade']) ?></td>
                         <td>R$ <?= number_format($item['valor_unitario'], 2, ',', '.') ?></td>
-                        <td>R$ <?= number_format($item['quantidade'] * $item['valor_unitario'], 2, ',', '.') ?></td>
+                        <td>R$ <?= number_format($total_item, 2, ',', '.') ?></td>
                         <td>
                             <a href="removerItemOrcamento.php?id=<?= htmlspecialchars($item['id']) ?>&id_orcamento=<?= htmlspecialchars($id_orcamento) ?>" class="btn btn-danger btn-sm">Remover</a>
                         </td>
@@ -73,7 +80,11 @@ $itens = $stmtItens->fetchAll(PDO::FETCH_ASSOC);
                 <?php endforeach; ?>
             </tbody>
         </table>
+
+        <!-- Exibir o valor total calculado -->
+        <p>Valor Total: R$ <?= number_format($valor_total_calculado, 2, ',', '.') ?></p>
         
+        <a href="adicionarItensOrcamento.php?id_orcamento=<?= htmlspecialchars($orcamento['id']) ?>" class="btn btn-primary mb-3">Adicionar Item</a>
         <a href="imprimirOrcamento.php?id=<?= htmlspecialchars($id_orcamento) ?>" class="btn btn-success">Imprimir Orçamento</a>
         
         <!-- Exibir Botões de Navegação -->
