@@ -39,21 +39,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             height: 100%;
             margin: 0;
             display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: center;
+            align-items: center;
             background: url('img_lib/background.jpg') no-repeat center center fixed;
             background-size: cover;
         }
         .login-container {
             width: 100%;
-            max-width: 400px;
+            max-width: 800px;
             padding: 20px;
             background: rgba(255, 255, 255, 0.9);
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
+        }
+        .login-header {
             text-align: center;
         }
         .login-header img {
+            display: block;
+            margin: 0 auto;
             max-width: 150px;
             margin-bottom: 20px;
         }
@@ -61,6 +66,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             color: #007bff;
             font-weight: bold;
             margin-bottom: 20px;
+        }
+        .demo-info {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        footer {
+            margin-top: auto;
+            padding: 10px 0;
+            background: rgba(255, 255, 255, 0.8);
+            width: 100%;
+            text-align: center;
+            position: relative;
+            bottom: 0;
+            font-size: 0.9rem;
+            color: #555;
         }
     </style>
 </head>
@@ -71,23 +93,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <img src="img_lib/logo.png" alt="Logotipo do Sistema">
             <h2>Sistema de Vendas para Laboratórios</h2>
         </div>
-        
-        <?php if (isset($erro)): ?>
-            <div class="alert alert-danger"><?= $erro ?></div>
-        <?php endif; ?>
-        
-        <form method="POST" action="">
-            <div class="mb-3">
-                <label for="usuario" class="form-label">Usuário:</label>
-                <input type="text" id="usuario" name="usuario" class="form-control" required>
+
+        <div class="row">
+            <!-- Formulário de login -->
+            <div class="col-md-6">
+                <?php if (isset($erro)): ?>
+                    <div class="alert alert-danger"><?= $erro ?></div>
+                <?php endif; ?>
+                
+                <form method="POST" action="">
+                    <div class="mb-3">
+                        <label for="usuario" class="form-label">Usuário:</label>
+                        <input type="text" id="usuario" name="usuario" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="senha" class="form-label">Senha:</label>
+                        <input type="password" id="senha" name="senha" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Entrar</button>
+                </form>
             </div>
-            <div class="mb-3">
-                <label for="senha" class="form-label">Senha:</label>
-                <input type="password" id="senha" name="senha" class="form-control" required>
+
+            <!-- Informações de demonstração -->
+            <div class="col-md-6 demo-info">
+                <h5 class="text-center">Versão de demonstração</h5>
+                <p>Utilize o seguinte usuário e senha para acessar o sistema:</p>
+                <ul>
+                    <li><strong>Usuário:</strong> teste1</li>
+                    <li><strong>Senha:</strong> Teste1@</li>
+                </ul>
             </div>
-            <button type="submit" class="btn btn-primary w-100">Entrar</button>
-        </form>
+        </div>
     </div>
+
+    <!-- Rodapé com os créditos -->
+    <footer>
+        Projeto criado por Alisson para fins educacionais.
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

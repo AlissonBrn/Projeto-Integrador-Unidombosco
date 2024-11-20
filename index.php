@@ -152,6 +152,11 @@ $nivelAcesso = $_SESSION['nivel_acesso'];
         </div>
     </div>
 
+    <!-- Rodapé -->
+    <footer class="text-center mt-5 py-3" style="background-color: #343a40; color: white;">
+        <p>Projeto criado por Alisson para fins educacionais.</p>
+    </footer>
+
     <!-- Script do Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
