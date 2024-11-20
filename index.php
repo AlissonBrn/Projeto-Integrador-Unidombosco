@@ -98,7 +98,7 @@ $nivelAcesso = $_SESSION['nivel_acesso'];
             <div class="col">
                 <div class="card h-100 text-center">
                     <div class="card-body">
-                        <h5 class="card-title">Produtos</h5>
+                        <h5 class="card-title">Produtos e estoque</h5>
                         <p class="card-text">Controle o estoque e detalhes dos produtos.</p>
                         <a href="produtos/listar.php" class="btn btn-primary w-100">Acessar Produtos</a>
                     </div>
